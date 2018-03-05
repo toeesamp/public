@@ -1,0 +1,132 @@
+18a19,25
+> 	// bernstein spline
+> 	Matrix4f B(
+> 		1.0f, -3.0f, 3.0f, -1.0f,
+> 		0.0f, 3.0f, -6.0f, 3.0f,
+> 		0.0f, 0.0f, 3.0f, -3.0f,
+> 		0.0f, 0.0f, 0.0f, 1.0f
+> 	);
+19a27,33
+> 	// b-spline
+> 	Matrix4f B_bs(
+> 		1.0f / 6.0f, -3.0f / 6.0f, 3.0f / 6.0f, -1.0f / 6.0f,
+> 		4.0f / 6.0f, 0.0f / 6.0f, -6.0f / 6.0f, 3.0f / 6.0f,
+> 		1.0f / 6.0f, 3.0f / 6.0f, 3.0f / 6.0f, -3.0f / 6.0f,
+> 		0.0f / 6.0f, 0.0f / 6.0f, 0.0f / 6.0f, 1.0f / 6.0f
+> 	);
+32,39c46,66
+<     // TODO:
+<     // You should implement this function so that it returns a Curve
+<     // (e.g., a vector< CurvePoint >).  The variable "steps" tells you
+<     // the number of points to generate on each piece of the spline.
+<     // At least, that's how the sample solution is implemented and how
+<     // the SWP files are written.  But you are free to interpret this
+<     // variable however you want, so long as you can control the
+<     // "resolution" of the discretized spline curve with it.
+---
+> 	Curve curve = Curve();
+> 	CurvePoint cp;
+> 	
+> 	Vector3f prevB(0, 0, 1);
+> 
+> 	// silmukka yleiselle k�yr�lle
+> 	// otetaan 4 ekaa pistett� ja sitten siirryt��n k�yr�n seuraavaan osaan
+> 	// +3, koska ekan k�yr�n viimeinen ja seuraavan ensimm�inen pit�� olla sama piste
+> 	for (size_t j = 0; j < P.size()-1; j=j+3)
+> 	{
+> 		Matrix4f G(Vector4f(P[j], 0.0f), Vector4f(P[j+1], 0.0f), Vector4f(P[j+2], 0.0f), Vector4f(P[j+3], 0.0f));
+> 
+> 		float t = 0.0f;
+> 		float step = 1.0f / steps;
+> 
+> 		for (size_t i = 0; i <= steps; i++)
+> 		{
+> 			Vector4f Tt(1, t, t*t, t*t*t);
+> 			Vector4f dTt(0, 1, 2*t, 3*t*t);
+> 			cp.V = (G*B*Tt).xyz();
+> 			cp.T = (G*B*dTt).xyz().normalized();
+41,43c68,69
+<     // Make sure that this function computes all the appropriate
+<     // Vector3fs for each CurvePoint: V,T,N,B.
+<     // [NBT] should be unit and orthogonal.
+---
+> 			cp.N = Vector3f::cross(prevB, cp.T).normalized();
+> 			cp.B = Vector3f::cross(cp.T, cp.N).normalized();
+45,47c71,76
+<     // Also note that you may assume that all Bezier curves that you
+<     // receive have G1 continuity.  Otherwise, the TNB will not be
+<     // be defined at points where this does not hold.
+---
+> 			//T�ll� saadaan cp.N ristituloon Bi-1
+> 			prevB = cp.B;
+> 			curve.push_back(cp);
+> 			t = t + step;
+> 		}
+> 	}
+58d86
+<     cerr << "\t>>> Returning empty curve." << endl;
+60,61c88
+<     // Right now this will just return this empty curve.
+<     return Curve();
+---
+>     return curve;
+73,76c100,120
+<     // TODO:
+<     // It is suggested that you implement this function by changing
+<     // basis from B-spline to Bezier.  That way, you can just call
+<     // your evalBezier function.
+---
+> 	cerr << "\t>>> evalBSpline has been called with the following input:" << endl;
+> 
+> 	cerr << "\t>>> Control points (type vector< Vector3f >): " << endl;
+> 	for (unsigned i = 0; i < P.size(); ++i)
+> 	{
+> 		cerr << "\t>>> " << P[i] << endl;
+> 	}
+> 
+> 	cerr << "\t>>> Steps (type steps): " << steps << endl;
+> 
+> 	Curve curve = Curve();
+> 	CurvePoint cp;
+> 
+> 	Vector3f prevB(0, 0, 1);
+> 
+> 	for (size_t j = 0; j + 3 < P.size(); j++)
+> 	{
+> 		Matrix4f G(Vector4f(P[j], 0.0f), Vector4f(P[j + 1], 0.0f), Vector4f(P[j + 2], 0.0f), Vector4f(P[j + 3], 0.0f));
+> 
+> 		float t = 0.0f;
+> 		float step = 1.0f / steps;
+78c122,127
+<     cerr << "\t>>> evalBSpline has been called with the following input:" << endl;
+---
+> 		for (size_t i = 0; i <= steps; i++)
+> 		{
+> 			Vector4f Tt(1, t, t*t, t*t*t);
+> 			Vector4f dTt(0, 1, 2 * t, 3 * t*t);
+> 			cp.V = (G*B_bs*Tt).xyz();
+> 			cp.T = (G*B_bs*dTt).xyz().normalized();
+80,84c129,130
+<     cerr << "\t>>> Control points (type vector< Vector3f >): "<< endl;
+<     for( unsigned i = 0; i < P.size(); ++i )
+<     {
+<         cerr << "\t>>> " << P[i] << endl;
+<     }
+---
+> 			cp.N = Vector3f::cross(prevB, cp.T).normalized();
+> 			cp.B = Vector3f::cross(cp.T, cp.N).normalized();
+86,87c132,133
+<     cerr << "\t>>> Steps (type steps): " << steps << endl;
+<     cerr << "\t>>> Returning empty curve." << endl;
+---
+> 			//T�ll� saadaan cp.N ristituloon Bi-1
+> 			prevB = cp.B;
+89,90c135,139
+<     // Return an empty curve right now.
+<     return Curve();
+---
+> 			curve.push_back(cp);
+> 			t = t + step;
+> 		}
+> 	}
+>     return curve;

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project rankingGUI">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="E:/kurssit/ohj2/ht/rankingGUI/rankingGUI.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="rankingGUI.AloitusIkkuna"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="E:/kurssit/ohj2/ht/rankingGUI/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/devel/ee43/eclipse/plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/devel/ee43/eclipse/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="E:/kurssit/ohj2/ht/rankingGUI/Ali.jar"/>
+            <fileset dir="E:/kurssit/ohj2/ht/rankingGUI"/>
+            <zipfileset excludes="META-INF/*.SF" src="E:/kurssit/ohj2/ht/rankingGUI/gui.jar"/>
+        </jar>
+    </target>
+</project>
