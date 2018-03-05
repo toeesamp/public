@@ -5,7 +5,7 @@ Tästä kansiosta löytyy pari ratkaisua saman kurssikoodin omaavaan [MIT:n avoi
 [axpy](https://reference.wolfram.com/language/LowLevelLinearAlgebra/ref/AXPY.html)-operaatio toteutettuna CUDA:lla.
 
 ## liikennevalot.py
-liikennevalojen logiikan toteutus pythonilla Rasbperry Pi:tä varten.
+Liikennevalojen logiikan toteutus pythonilla Rasbperry Pi:tä varten.
 
 ## muunna_merkit.sh
-skripti tiedoston merkistön vaihtamiseen.
+Skripti tiedoston merkistön vaihtamiseen.
