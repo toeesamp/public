@@ -1,0 +1,25 @@
+﻿<Window x:Class="ht.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pelilauta="clr-namespace:Pelilauta;assembly=Pelilauta"
+        xmlns:nappula="clr-namespace:Nappula;assembly=Nappula"
+        Title="Breakthrough" Height="350" Width="400" MinWidth="400" MinHeight="350">
+    <DockPanel Background="White" LastChildFill="False" Margin="0,0,10,0">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_Tiedosto">
+                <MenuItem Name="uusiPeli" Header="_Uusi peli" Click="uusiPeli_Click"/>
+                <MenuItem Name="sulje" Header="_Sulje" Click="sulje_Click" />
+            </MenuItem>
+            <MenuItem Header="_Ohje">
+                <MenuItem Name="avustus" Header="_Avustus" Click="avustus_Click"/>
+                <MenuItem Name="tietoja" Header="_Tietoja" Click="tietoja_Click" />
+            </MenuItem>
+        </Menu>
+        <!--<nappula:NappulaClass Name="namiska" Width="50" Height="50"/>-->
+        <pelilauta:PelilautaClass Name="lauta" HorizontalAlignment="Left">
+            
+        </pelilauta:PelilautaClass>
+        <Button DockPanel.Dock="Right" Content="_Uusi peli" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="16" Click="Button_Click"/>
+        <!--<Button Content="Button" Height="301" VerticalAlignment="Top" Width="75" Click="Button_Click"/>-->
+    </DockPanel>
+</Window>

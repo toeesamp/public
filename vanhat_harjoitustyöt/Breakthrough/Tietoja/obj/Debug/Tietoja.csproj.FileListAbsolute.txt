@@ -1,0 +1,14 @@
+E:\kurssit\gko\ht\Tietoja\bin\Debug\Tietoja.exe.config
+E:\kurssit\gko\ht\Tietoja\bin\Debug\Tietoja.exe
+E:\kurssit\gko\ht\Tietoja\bin\Debug\Tietoja.pdb
+E:\kurssit\gko\ht\Tietoja\obj\Debug\App.g.cs
+E:\kurssit\gko\ht\Tietoja\obj\Debug\Tietoja_MarkupCompile.cache
+E:\kurssit\gko\ht\Tietoja\obj\Debug\Tietoja.g.resources
+E:\kurssit\gko\ht\Tietoja\obj\Debug\Tietoja.Properties.Resources.resources
+E:\kurssit\gko\ht\Tietoja\obj\Debug\Tietoja.csproj.GenerateResource.Cache
+E:\kurssit\gko\ht\Tietoja\obj\Debug\Tietoja.exe
+E:\kurssit\gko\ht\Tietoja\obj\Debug\Tietoja.pdb
+E:\kurssit\gko\ht\Tietoja\obj\Debug\TietojaDialog.baml
+E:\kurssit\gko\ht\Tietoja\obj\Debug\TietojaDialog.g.cs
+E:\kurssit\gko\ht\Tietoja\obj\Debug\Tietoja.csprojResolveAssemblyReference.cache
+E:\kurssit\gko\ht\Tietoja\obj\Debug\Tietoja.csproj.CoreCompileInputs.cache

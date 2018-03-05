@@ -1,0 +1,14 @@
+E:\kurssit\gko\ht\Pelilauta\bin\Debug\Pelilauta.dll
+E:\kurssit\gko\ht\Pelilauta\bin\Debug\Pelilauta.pdb
+E:\kurssit\gko\ht\Pelilauta\obj\Debug\Pelilauta.csprojResolveAssemblyReference.cache
+E:\kurssit\gko\ht\Pelilauta\obj\Debug\Pelilauta_MarkupCompile.cache
+E:\kurssit\gko\ht\Pelilauta\obj\Debug\Pelilauta.g.resources
+E:\kurssit\gko\ht\Pelilauta\obj\Debug\Pelilauta.Properties.Resources.resources
+E:\kurssit\gko\ht\Pelilauta\obj\Debug\Pelilauta.csproj.GenerateResource.Cache
+E:\kurssit\gko\ht\Pelilauta\obj\Debug\Pelilauta.dll
+E:\kurssit\gko\ht\Pelilauta\obj\Debug\Pelilauta.pdb
+E:\kurssit\gko\ht\Pelilauta\obj\Debug\Pelilauta.baml
+E:\kurssit\gko\ht\Pelilauta\obj\Debug\Pelilauta.g.cs
+E:\kurssit\gko\ht\Pelilauta\bin\Debug\Nappula.dll
+E:\kurssit\gko\ht\Pelilauta\bin\Debug\Nappula.pdb
+E:\kurssit\gko\ht\Pelilauta\obj\Debug\Pelilauta.csproj.CoreCompileInputs.cache

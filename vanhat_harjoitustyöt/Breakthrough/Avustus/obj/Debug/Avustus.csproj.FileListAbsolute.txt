@@ -1,0 +1,14 @@
+E:\kurssit\gko\ht\Avustus\bin\Debug\Avustus.exe.config
+E:\kurssit\gko\ht\Avustus\bin\Debug\Avustus.exe
+E:\kurssit\gko\ht\Avustus\bin\Debug\Avustus.pdb
+E:\kurssit\gko\ht\Avustus\obj\Debug\Avustus.csprojResolveAssemblyReference.cache
+E:\kurssit\gko\ht\Avustus\obj\Debug\AvustusWindow.baml
+E:\kurssit\gko\ht\Avustus\obj\Debug\AvustusWindow.g.cs
+E:\kurssit\gko\ht\Avustus\obj\Debug\App.g.cs
+E:\kurssit\gko\ht\Avustus\obj\Debug\Avustus_MarkupCompile.cache
+E:\kurssit\gko\ht\Avustus\obj\Debug\Avustus.g.resources
+E:\kurssit\gko\ht\Avustus\obj\Debug\Avustus.Properties.Resources.resources
+E:\kurssit\gko\ht\Avustus\obj\Debug\Avustus.csproj.GenerateResource.Cache
+E:\kurssit\gko\ht\Avustus\obj\Debug\Avustus.exe
+E:\kurssit\gko\ht\Avustus\obj\Debug\Avustus.pdb
+E:\kurssit\gko\ht\Avustus\obj\Debug\Avustus.csproj.CoreCompileInputs.cache

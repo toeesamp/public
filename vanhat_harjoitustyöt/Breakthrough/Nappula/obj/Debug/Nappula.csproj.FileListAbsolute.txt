@@ -1,0 +1,12 @@
+E:\kurssit\gko\ht\Nappula\bin\Debug\Nappula.dll
+E:\kurssit\gko\ht\Nappula\bin\Debug\Nappula.pdb
+E:\kurssit\gko\ht\Nappula\obj\Debug\Nappula.csprojResolveAssemblyReference.cache
+E:\kurssit\gko\ht\Nappula\obj\Debug\Nappula.baml
+E:\kurssit\gko\ht\Nappula\obj\Debug\Nappula.g.cs
+E:\kurssit\gko\ht\Nappula\obj\Debug\Nappula_MarkupCompile.cache
+E:\kurssit\gko\ht\Nappula\obj\Debug\Nappula.g.resources
+E:\kurssit\gko\ht\Nappula\obj\Debug\Nappula.Properties.Resources.resources
+E:\kurssit\gko\ht\Nappula\obj\Debug\Nappula.csproj.GenerateResource.Cache
+E:\kurssit\gko\ht\Nappula\obj\Debug\Nappula.dll
+E:\kurssit\gko\ht\Nappula\obj\Debug\Nappula.pdb
+E:\kurssit\gko\ht\Nappula\obj\Debug\Nappula.csproj.CoreCompileInputs.cache
