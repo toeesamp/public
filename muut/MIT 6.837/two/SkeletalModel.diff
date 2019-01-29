@@ -1,0 +1,121 @@
+4a5,8
+> #ifndef M_PI
+> #define M_PI 3.14159265358979f
+> #endif
+> 
+42c46
+< void SkeletalModel::loadSkeleton( const char* filename )
+---
+> void SkeletalModel::loadSkeleton(const char* filename)
+44a49,87
+> 
+> 	string line;
+> 	ifstream file (filename, ifstream::in);
+> 
+> 	if (file.is_open())
+> 	{
+> 		while (getline(file, line))
+> 		{
+> 			stringstream ss(line);
+> 
+> 			Joint *joint = new Joint;
+> 
+> 			Vector3f transVector;
+> 
+> 			int index;
+> 
+> 			ss >> transVector[0];
+> 			ss >> transVector[1];
+> 			ss >> transVector[2];
+> 
+> 			ss >> index;
+> 
+> 			joint->transform = Matrix4f::translation(transVector);
+> 
+> 			m_joints.push_back(joint);
+> 
+> 
+> 			if (index >= 0)
+> 			{
+> 				m_joints[index]->children.push_back(joint);
+> 			}
+> 
+> 			// Tiedostomuodossa on määritelty rootjointin indeksiksi -1
+> 			if (index == -1)
+> 			{
+> 				m_rootJoint = joint;
+> 			}
+> 		}
+> 	}
+46a90,105
+> void SkeletalModel::drawJoint(Joint *currentJoint)
+> {
+> 	m_matrixStack.push(currentJoint->transform);
+> 	glLoadMatrixf(m_matrixStack.top());
+> 	glutSolidSphere(0.025f, 12, 12);
+> 
+> 	// Piirretään kaikki nivelet rekursiivisesti
+> 	for (size_t i = 0; i < currentJoint->children.size(); i++)
+> 	{
+> 		drawJoint(currentJoint->children[i]);
+> 	}
+> 	m_matrixStack.pop();
+> 	glLoadMatrixf(m_matrixStack.top());
+> }
+> 
+>  
+57a117,118
+> 
+> 	drawJoint(m_rootJoint);
+59a121,169
+> 
+> void SkeletalModel::drawBone(Joint *currentJoint)
+> {
+> 	m_matrixStack.push(currentJoint->transform);
+> 	glLoadMatrixf(m_matrixStack.top());
+> 
+> 	// Luuta ei piirretä jos ollaan root jointissa
+> 	if (currentJoint != this->m_rootJoint)
+> 	{
+> 		// Selvitetään nykyisen nivelen ja sen parentin välinen siirto transformaatiomatriisista
+> 		// ja otetaan siitä negaatio -> saadaan vektori, jonka suuntaiseksi luu pitää kääntää
+> 		Vector3f parentOffsetVector = currentJoint->transform.getCol(3).xyz();
+> 		parentOffsetVector.negate();
+> 
+> 		// Lasketaan etäisyys nykyisen nivelen ja sen parentin välillä
+> 		float distanceToParent = parentOffsetVector.abs();
+> 
+> 		// Z-akselin suuntainen vektori, jonka avulla selvitetään luun kääntöakseli ja -kulma
+> 		Vector3f zAxis(0.0f, 0.0f, distanceToParent);
+> 
+> 		// Apuvektorin ja parentOffsetin ristitulona saadaan akseli, jonka ympäri luuta pitää pyörittää
+> 		Vector3f rotationAxis = Vector3f::cross(zAxis, parentOffsetVector);
+> 		
+> 		// Ottamalla arkustangentti pisteestä, joka muodostuu pyöräytysakselin pituudesta ja apuvektorin, sekä parentOffsetin pistetulosta
+> 		// saadaan tarvittava pyöräytyskulma radiaaneina (jonka jälkeen se muutetaan asteiksi)
+> 		float rotationAngleDegrees = atan2(rotationAxis.abs(), Vector3f::dot(zAxis, parentOffsetVector))*(180.0 / M_PI);
+> 
+> 		// Tehdään kaikki tarvittavat transformaatiot (pyöritys, siirto ja skaalaus) oikeassa järjestyksessä, jonka jälkeen piirretään luu
+> 		glRotatef(rotationAngleDegrees, rotationAxis.x(), rotationAxis.y(), rotationAxis.z());
+> 
+> 		// Siirretään luu lähtemään jointin keskipisteestä z-akselin suuntaan
+> 		glTranslatef(0.0f, 0.0f, distanceToParent / 2.0f);
+> 
+> 		// Skaalataan luu järkevän levyiseksi ja sen pituiseksi, että se päättyy parentJointin keskelle
+> 		glScalef(0.05f, 0.05f, distanceToParent);
+> 
+> 		glutSolidCube(1.0f);
+> 	}
+> 
+> 	// Piirretään kaikki luut rekursiivisesti
+> 	for (size_t i = 0; i < currentJoint->children.size(); i++)
+> 	{
+> 		drawBone(currentJoint->children[i]);
+> 	}
+> 
+> 	m_matrixStack.pop();
+> 	glLoadMatrixf(m_matrixStack.top());
+> }
+> 
+62a173
+> 	drawBone(m_rootJoint);
