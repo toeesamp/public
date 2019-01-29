@@ -1,1 +1,1 @@
-Täältä löytyy näytteitä yliopiston kursseilla tekemistäni töistä. Kansiosta `vanhat_harjoitustyöt` löytyy nimensä mukaisesti pari opintojen alkupuolella tehtyä harjoitustyötä ja kansiosta `muut` erilaisten kurssien tehtävien ratkaisuja.
+Täältä löytyy näytteitä yliopiston kursseilla tekemistäni töistä. Kansiosta `vanhat_harjoitustyöt` löytyy nimensä mukaisesti pari opintojen alkupuolella tehtyä harjoitustyötä ja kansiosta `muut` lähinnä erilaisten kurssien tehtävien ratkaisuja.
