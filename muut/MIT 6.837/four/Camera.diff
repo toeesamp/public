@@ -1,0 +1,46 @@
+14c14
+< 	virtual Ray generateRay( const Vector2f& point ) = 0 ; 
+---
+> 	virtual Ray generateRay( const Vector2f& point , float aspectRatio) = 0 ; 
+26,27d25
+< ///TODO: Implement Perspective camera
+< ///Fill in functions and add more fields if necessary
+31d28
+< 	PerspectiveCamera(const Vector3f& center, const Vector3f& direction,const Vector3f& up , float angle){
+32a30,37
+> 	//Luodaan perspektiivikamera haluttuun pisteeseen ja määritetään sille katsomissuunta, yläsuunta ja
+> 	//katselukulma
+> 	PerspectiveCamera(const Vector3f& center, const Vector3f& direction,const Vector3f& up , float angle)
+> 	{
+> 		this->center = center;
+> 		this->direction = direction;
+> 		this->up = up;
+> 		this->angle = angle;
+35,36c40,56
+< 	virtual Ray generateRay( const Vector2f& point){
+< 		return Ray(Vector3f(1,0,0),Vector3f(1,0,0));
+---
+> 
+> 	//Luodaan normalisoitu säde, joka lähtee kameran keskipisteestä parametrinä annettua pistettä kohti
+> 	virtual Ray generateRay( const Vector2f& point, float aspectRatio){
+> 		
+> 		//Kameran uvw-kanta
+> 		Vector3f w = this->direction;
+> 		Vector3f u = Vector3f::cross(w, this->up);
+> 		Vector3f v = Vector3f::cross(u, w);
+> 
+> 		//Etäisyys näyttötasoon
+> 		float distance = 1.0f / tan(angle / 2.0f);
+> 
+> 		//Määritetään säteen lähtöpiste ja suunta
+> 		Vector3f rayOrigin = this->center;
+> 		Vector3f rayDirection = (point.x()*u + aspectRatio*point.y()*v + distance * w).normalized();
+> 
+> 		return Ray(rayOrigin, rayDirection);
+44c64,67
+< 
+---
+> 	Vector3f center;
+> 	Vector3f direction;
+> 	Vector3f up;
+> 	float angle;

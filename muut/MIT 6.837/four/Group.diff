@@ -1,0 +1,76 @@
+12,14d11
+< ///TODO: 
+< ///Implement Group
+< ///Add data structure to store a list of Object* 
+19c16,29
+<   Group(){
+---
+> 	Group() {
+> 
+> 	}
+> 
+> 	//Luodaan group halutulla määrällä objekteja
+> 	Group(int num_objects) 
+> 	{
+> 		objects.resize(num_objects);
+> 	}
+> 
+> 	~Group() 
+> 	{
+> 
+> 	}
+21,23d30
+<   }
+< 	
+<   Group( int num_objects ){
+25c32,36
+<   }
+---
+> 	//Käydään läpi kaikki grooupin sisältämät objektit ja kutsutaan niiden
+> 	//omaa intersectiä. Palautetaan true jos yksikin leikkaus löytyy
+> 	virtual bool intersect(const Ray& r, Hit& h, float tmin) 
+> 	{
+> 		bool intersectFound = false;
+27,29c38,46
+<   ~Group(){
+<    
+<   }
+---
+> 		for (Object3D* object : objects)
+> 		{
+> 			if (object->intersect(r, h, tmin))
+> 			{
+> 				intersectFound = true;
+> 			}
+> 		}
+> 		return intersectFound;
+> 	}
+31,35d47
+<   virtual bool intersect( const Ray& r , Hit& h , float tmin ) {
+< 		return false;
+<    }
+< 	
+<   void addObject( int index , Object3D* obj ){
+37c49,53
+<   }
+---
+> 	//Lisätään grouppiin objekti haluttuun indeksiin
+> 	void addObject(int index, Object3D* obj)
+> 	{
+> 		this->objects[index] = obj;
+> 	}
+39,41d54
+<   int getGroupSize(){ 
+<   
+<   }
+43c56,60
+<  private:
+---
+> 	//Palauttaa groupin koon
+> 	int getGroupSize() 
+> 	{
+> 		return objects.size();
+> 	}
+44a62,63
+> private:
+> 	std::vector< Object3D* > objects;

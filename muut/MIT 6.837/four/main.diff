@@ -1,0 +1,263 @@
+6a7
+> #include <sstream>
+10a12
+> #include "VecUtils.h"
+15c17,18
+< float clampedDepth ( float depthInput, float depthMin , float depthMax);
+---
+> float clamp(float input, float min, float max);
+> static const char* getArgument(int argc, char* argv[], const char* option);
+18c21,57
+< int main( int argc, char* argv[] )
+---
+> 
+> 
+> //Käydään argumenttilista läpi ja katsotaan löytyykö sieltä haluttua argumenttia (option).
+> //Jos löytyy niin palautetaan seuraava alkio eli argumentin arvo
+> static const char* getArgument(int argc, char* argv[], const char* option)
+> {
+> 	if (option == NULL)
+> 	{
+> 		return 0;
+> 	}
+> 	for (int i = 1; i <= argc; i++)
+> 	{
+> 		if (argv[i] != NULL && strncmp(argv[i], option, 256) == 0)
+> 		{
+> 			return argv[i + 1];
+> 		}
+> 	}
+> 	return 0;
+> }
+> 
+> 
+> //Clamppaa luvun minimin ja maksimin välille
+> float clamp(float input, float min, float max)
+> {
+> 	if (input < min)
+> 	{
+> 		return min;
+> 	}
+> 	else if (input > max)
+> 	{
+> 		return max;
+> 	}
+> 	return input;
+> }
+> 
+> 
+> int main(int argc, char* argv[])
+20c59,139
+<   // Fill in your implementation here.
+---
+> 	//parsetaan argumentit
+> 
+> 	const char* parsedInput = getArgument(argc, argv, "-input");
+> 	//std::cout << parsedInput << std::endl;
+> 
+> 	const char* parsedWidth = getArgument(argc, argv, "-size");
+> 	//std::cout << parsedWidth << std::endl;
+> 
+> 	const char* parsedHeight = getArgument(argc, argv, parsedWidth);
+> 	//std::cout << parsedHeight << std::endl;
+> 
+> 	const char* parsedOutput = getArgument(argc, argv, "-output");
+> 	//std::cout << parsedOutput << std::endl;
+> 
+> 	const char* parsedDepthMin = getArgument(argc, argv, "-depth");
+> 	//std::cout << parsedDepthMin << std::endl;
+> 
+> 
+> 	const char* parsedDepthMax = NULL;
+> 	const char* parsedDepthOutput = NULL;
+> 
+> 	if (parsedDepthMin != NULL)
+> 	{
+> 		parsedDepthMax = getArgument(argc, argv, parsedDepthMin);
+> 		//std::cout << parsedDepthMax << std::endl;
+> 
+> 		parsedDepthOutput = getArgument(argc, argv, parsedDepthMax);
+> 		//std::cout << parsedDepthOutput << std::endl;
+> 	}
+> 	
+> 	const char* parsedNormalsOutput = getArgument(argc, argv, "-normals");
+> 	//std::cout << parsedNormalsOutput << std::endl;
+> 
+> 
+> 
+> 	string arguments;
+> 	arguments.append(parsedWidth);
+> 	arguments.append(" ");
+> 	arguments.append(parsedHeight);
+> 	arguments.append(" ");
+> 	arguments.append(parsedDepthMin);
+> 	arguments.append(" ");
+> 	arguments.append(parsedDepthMax);
+> 
+> 
+> 	stringstream ss(arguments);
+> 	int width, height, depthMin, depthMax;
+> 	char* input = (char*)parsedInput;
+> 
+> 	ss >> width;
+> 	ss >> height;
+> 	ss >> depthMin;
+> 	ss >> depthMax;
+> 
+> 
+> 	/*Ensin parsetaan scene inputin määrittelemästä tiedostosta
+> 	 *Seuraavaksi loopataan jokaisen pikselin yli ja lähetetään ray sen suuntaan
+> 	 *Peruskuva (image, pixelColor) väritetään "normaalisti" input-tiedoston määritelmien mukaan
+> 	 *
+> 	 *Syvyyskuva (depthImage, depthPixelColor) väritetään säteen osumaetäisyyden mukaan siten, 
+> 	 *että lähin osuma on valkoinen ja väri tummenee osuman mennessä kauemmas.
+> 	 *
+> 	 *Normaaleiden kuva (normalsImage, normalsPixelColor) väritetään osumakohtien normaaleiden mukaan
+> 	 *(osumapinnan suhteen) siten että, x on punainen, y vihreä ja z sininen
+> 	 *
+> 	 *Pikseli, jota vastaava säde ei osu mihinkään värjätään peruskuvassa backgroundColorin mukaan 
+> 	 *ja muissa kuvissa mustaksi.
+> 	 */
+> 	SceneParser scene(input);
+> 	Camera* camera = scene.getCamera();
+> 	Group* group = scene.getGroup();
+> 
+> 	Image image(width, height);
+> 	Image depthImage(width, height);
+> 	Image normalsImage(width, height);
+> 
+> 	Vector3f pixelColor(0.0f, 0.0f, 0.0f);
+> 	Vector3f depthPixelColor(0.0f, 0.0f, 0.0f);
+> 	Vector3f normalsPixelColor(0.0f, 0.0f, 0.0f);
+> 
+> 	Vector3f backgroundColor = scene.getBackgroundColor();
+22,29c141,142
+<   // This loop loops over each of the input arguments.
+<   // argNum is initialized to 1 because the first
+<   // "argument" provided to the program is actually the
+<   // name of the executable (in our case, "a4").
+<   for( int argNum = 1; argNum < argc; ++argNum )
+<     {
+<       std::cout << "Argument " << argNum << " is: " << argv[argNum] << std::endl;
+<     }
+---
+> 	//Selvitetään kuvasuhde
+> 	float aspectRatio = (float)image.Height() / (float)image.Width();
+31,36c144,200
+<     
+<   // First, parse the scene using SceneParser.
+<   // Then loop over each pixel in the image, shooting a ray
+<   // through that pixel and finding its intersection with
+<   // the scene.  Write the color at the intersection to that
+<   // pixel in your output image.
+---
+> 	for (size_t i = 0; i < image.Width(); i++)
+> 	{
+> 		for (size_t j = 0; j < image.Height(); j++)
+> 		{
+> 			//Skaalataan annetut kuvan mitat välille [-1, 1]
+> 			float scaledX = -1.0f + 2.0f * (float)i / (float)image.Width();
+> 			float scaledY = -1.0f + 2.0f * (float)j / (float)image.Height();
+> 
+> 			//Generoidaan säde skaalattuja koordinaatteja kohti
+> 			Ray ray = camera->generateRay(Vector2f(scaledX, scaledY), aspectRatio);
+> 			Hit hit = Hit();
+> 
+> 
+> 			//Selvitetään osuuko säde mihinkään groupin sisältämään objektiin 
+> 			//ja väritetään pikseli sen mukaan
+> 			if (group->intersect(ray, hit, 0.0f))
+> 			{
+> 				//Peruskuvan väri
+> 
+> 				if (scene.getNumLights() != 1)
+> 				{
+> 					std::cout << "WARNING: the current implementation is only for 1 light source " << std::endl;
+> 				}
+> 
+> 				Material* material = hit.getMaterial();
+> 				Light* light = scene.getLight(0);
+> 				Vector3f ambientLight = scene.getAmbientLight();
+> 				Vector3f diffuseColor = material->getDiffuseColor();
+> 
+> 				Vector3f lightDirection;
+> 				Vector3f lightColor;
+> 				float distance;
+> 
+> 				Vector3f intersectPoint = ray.getOrigin() + ray.getDirection() * hit.getT();
+> 
+> 				//Selvitetään osumakohdan valaistusolosuhteet
+> 				light->getIllumination(intersectPoint, lightDirection, lightColor, distance);
+> 
+> 				//Varjostetaan pikseli valaistuksen mukaan
+> 				Vector3f shadedColor = material->Shade(ray, hit, lightDirection, lightColor );
+> 
+> 
+> 				//Tässä myös summattaisiin kaikkien valojen shaded värit, mutta toistaiseksi niitä on vain yksi
+> 				pixelColor = ambientLight * diffuseColor + shadedColor;
+> 
+> 
+> 				//Syvyyskuvan väri
+> 				float clampedHit = clamp(hit.getT(), depthMin, depthMax);
+> 
+> 				//Syvyyden arvojen välin pituus
+> 				float depthScaleRange = (float)depthMax - (float)depthMin;
+> 
+> 				//Siirretään syvyyden arvo lähtemään nollasta
+> 				float depthColorValue = clampedHit - (float)depthMin;
+> 
+> 				//Skaalataan syvyyden arvo välille [0,1] pikseleiden väritystä varten
+> 				float scaledDepthColorValue = depthColorValue / depthScaleRange;
+37a202,204
+> 				//Väritetään syvyyskuvan pikselit siten, että lähin kohta on valkoinen 
+> 				//ja väri muuttuu sitä tummemmaksi, mitä kauemmas mennään
+> 				depthPixelColor = Vector3f(1.0f - scaledDepthColorValue, 1.0f - scaledDepthColorValue, 1.0f - scaledDepthColorValue);
+40,48c207,244
+<  
+<   ///TODO: below demonstrates how to use the provided Image class
+<   ///Should be removed when you start
+<   Vector3f pixelColor (1.0f,0,0);
+<   //width and height
+<   Image image( 10 , 15 );
+<   image.SetPixel( 5,5, pixelColor );
+<   image.SaveImage("demo.bmp");
+<   return 0;
+---
+> 				//Normaalikuvan väri
+> 				// x -> red
+> 				// y -> green
+> 				// z -> blue
+> 
+> 				//Skaalataan normaaleiden arvot väliltä [-1,1] välille [0,1]
+> 				
+> 				//Siirretään arvot välille [0,2] ja jaetaan kahdella
+> 				// -> arvot skaalautuvat välille [0,1]
+> 				normalsPixelColor.x() = (hit.getNormal().x() + 1.0f) / 2.0f;
+> 				normalsPixelColor.y() = (hit.getNormal().y() + 1.0f) / 2.0f;
+> 				normalsPixelColor.z() = (hit.getNormal().z() + 1.0f) / 2.0f;
+> 			}
+> 			else
+> 			{
+> 				pixelColor = backgroundColor;
+> 				depthPixelColor = Vector3f(0.0f, 0.0f, 0.0f);
+> 				normalsPixelColor = Vector3f(0.0f, 0.0f, 0.0f);
+> 			}	
+> 
+> 			//Asetetaan kullekin kuvalle kuuluvan pikselin väri
+> 			image.SetPixel(i, j, pixelColor);
+> 			depthImage.SetPixel(i, j, depthPixelColor);
+> 			normalsImage.SetPixel(i, j, normalsPixelColor);
+> 		}
+> 	}
+> 
+> 	//Tallennetaan kuvat
+> 	image.SaveImage(parsedOutput);
+> 	if (parsedDepthOutput != NULL)
+> 	{
+> 		depthImage.SaveImage(parsedDepthOutput);
+> 	}
+> 	if (parsedNormalsOutput != NULL)
+> 	{
+> 		normalsImage.SaveImage(parsedNormalsOutput);
+> 	}
+> 	return 0;
