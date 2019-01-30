@@ -1,6 +1,6 @@
 Ideana on luoda arduinopohjainen PIR-sensorilla toimiva valo, joka syttyy vain pimeällä. Tällä hetkellä projekti odottaa loppujen komponenttien saapumista.
 
-![kuva alustavasta suunnitelmasta]()
+![kuva alustavasta suunnitelmasta](https://raw.githubusercontent.com/toeesamp/public/master/muut/PIR-valo/PIR-valo_breadboard.png)
 
 - Valoisuuden tunnistaminen tapahtuu valovastuksen avulla
 - Oikeasti yksittäisen ledin tilalla on valkoista ledinauhaa
